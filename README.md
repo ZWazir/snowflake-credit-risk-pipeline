@@ -2,39 +2,237 @@
 
 ## Overview
 
-This project is an end-to-end data engineering and machine learning pipeline built with Snowflake, dbt, Python, and PyTorch.
+This project is an end-to-end data engineering and machine learning pipeline for credit risk modeling.
 
-The project simulates a credit risk workflow where raw borrower or loan data is loaded into Snowflake, transformed through a warehouse modeling process, converted into ML-ready feature tables, used to train a PyTorch classification model, and written back to Snowflake as prediction outputs.
+The pipeline currently runs locally using DuckDB as a lightweight warehouse. It is designed so the warehouse layer can later be migrated to Snowflake once Snowflake access is available.
 
-## Project Goals
+The project demonstrates how raw credit application data can move through a structured data workflow:
 
-The goal of this project is to demonstrate practical skills in:
+```text
+Synthetic Credit Data
+→ Raw CSV
+→ DuckDB Raw Table
+→ Staging Table
+→ Feature Table
+→ PyTorch Model Training
+→ Prediction Output Table
+```
 
-- Cloud data warehousing with Snowflake
-- Python-based data ingestion
-- SQL transformation workflows
-- dbt data modeling
-- Feature engineering for machine learning
-- PyTorch model training
-- Writing model predictions back to the warehouse
-- Portfolio-ready documentation and reproducible project structure
+## Project Purpose
 
-## Planned Architecture
+The purpose of this project is to build practical skills in data engineering and ML-adjacent pipeline development.
 
-Raw Data → Python Load Script → Snowflake RAW Schema → dbt Models → Feature Table → PyTorch Model → Prediction Table in Snowflake
+This project is designed to show:
+
+* Python-based data generation and ingestion
+* Local warehouse development with DuckDB
+* Layered warehouse design
+* SQL transformation workflows
+* Feature engineering for machine learning
+* PyTorch binary classification
+* Writing prediction outputs back to the warehouse
+* Reproducible end-to-end pipeline execution
+
+## Current Architecture
+
+The local MVP uses the following layers:
+
+### 1. Raw Data
+
+Synthetic credit application data is generated with Python and saved as a CSV file.
+
+Output:
+
+```text
+data/raw/credit_applications.csv
+```
+
+### 2. Raw Warehouse Layer
+
+The raw CSV is loaded into DuckDB.
+
+Table:
+
+```text
+raw.credit_applications
+```
+
+### 3. Staging Layer
+
+The staging layer standardizes column types and creates basic derived business fields.
+
+Table:
+
+```text
+staging.stg_credit_applications
+```
+
+Example derived fields:
+
+* `credit_score_band`
+* `income_band`
+* `high_dti_flag`
+* `high_loan_to_income_flag`
+
+### 4. Feature Layer
+
+The feature layer creates model-ready columns for PyTorch training.
+
+Table:
+
+```text
+features.credit_risk_features
+```
+
+Example feature fields:
+
+* `loan_to_income_ratio`
+* `credit_score_band_numeric`
+* `income_band_numeric`
+* `long_employment_flag`
+* `target_defaulted`
+
+### 5. Model Training
+
+A PyTorch binary classification model is trained using the warehouse feature table.
+
+Model task:
+
+```text
+Predict whether a credit applicant defaults.
+```
+
+### 6. Prediction Output
+
+Model predictions are written back to DuckDB as a warehouse table.
+
+Table:
+
+```text
+predictions.credit_risk_predictions
+```
+
+Prediction fields:
+
+* `customer_id`
+* `predicted_default_probability`
+* `predicted_default_flag`
+* `actual_defaulted`
 
 ## Tech Stack
 
-- Python
-- Snowflake
-- dbt
-- SQL
-- PyTorch
-- pandas
-- scikit-learn
+* Python
+* DuckDB
+* SQL
+* pandas
+* NumPy
+* scikit-learn
+* PyTorch
+* Git/GitHub
 
-## Project Status
+Planned future additions:
 
-In progress.
+* Snowflake
+* dbt
+* Pipeline orchestration
 
-Current phase: local project setup and dataset selection.
+## Project Structure
+
+```text
+snowflake-credit-risk-pipeline/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── .env.example
+│
+├── data/
+│   ├── DATA_SOURCE.md
+│   └── raw/
+│
+├── warehouse/
+│
+├── scripts/
+│   ├── create_sample_credit_data.py
+│   ├── load_raw_to_duckdb.py
+│   ├── create_staging_tables.py
+│   ├── create_feature_tables.py
+│   ├── write_predictions_to_duckdb.py
+│   └── run_pipeline.py
+│
+└── models/
+    └── train_pytorch_model.py
+```
+
+## How to Run the Project
+
+### 1. Create and activate a virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the full pipeline
+
+```bash
+python scripts/run_pipeline.py
+```
+
+This command runs the full local pipeline:
+
+```text
+Create sample data
+→ Load raw data
+→ Create staging table
+→ Create feature table
+→ Train PyTorch model
+→ Write predictions
+```
+
+## Current Model Output
+
+The initial PyTorch model trains successfully from the DuckDB feature table and produces evaluation metrics including:
+
+* Accuracy
+* Precision
+* Recall
+* ROC AUC
+
+The current model is an MVP. The main goal is to demonstrate pipeline integration rather than maximize predictive performance.
+
+## Current Status
+
+Local MVP is in progress.
+
+Completed:
+
+* Project setup
+* Local DuckDB warehouse
+* Synthetic credit dataset generation
+* Raw data ingestion
+* Staging transformation
+* Feature table creation
+* PyTorch model training
+* Prediction table output
+* End-to-end pipeline runner
+
+Planned next steps:
+
+* Improve model training workflow
+* Save and reuse preprocessing objects
+* Add validation tests
+* Add dbt transformation layer
+* Migrate warehouse layer from DuckDB to Snowflake
+* Add architecture diagram
+* Add final portfolio write-up
+
+## Notes
+
+This project is for educational and portfolio purposes. It is not intended for production credit decisioning.
