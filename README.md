@@ -119,6 +119,15 @@ Prediction fields:
 * `predicted_default_flag`
 * `actual_defaulted`
 
+### 7. Validation Checks
+
+The pipeline includes a validation script that checks whether the expected warehouse tables exist and contain the correct number of records.
+
+Validation script:
+
+```text
+scripts/validate_pipeline_outputs.py
+
 ## Tech Stack
 
 * Python
