@@ -9,6 +9,7 @@ PIPELINE_STEPS = [
     ("Create feature tables", "scripts/create_feature_tables.py"),
     ("Train PyTorch model", "models/train_pytorch_model.py"),
     ("Write predictions to DuckDB", "scripts/write_predictions_to_duckdb.py"),
+    ("Validate pipeline outputs", "scripts/validate_pipeline_outputs.py"),
 ]
 
 
