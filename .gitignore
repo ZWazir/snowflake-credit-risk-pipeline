@@ -7,3 +7,4 @@ data/raw/
 warehouse/*.duckdb
 warehouse/*.duckdb.wal
 models/*.pt
+models/*.joblib

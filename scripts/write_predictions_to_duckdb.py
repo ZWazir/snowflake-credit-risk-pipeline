@@ -2,12 +2,13 @@ import duckdb
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.preprocessing import StandardScaler
+import joblib
 from torch import nn
 
 
 DATABASE_PATH = "warehouse/credit_risk.duckdb"
 MODEL_PATH = "models/credit_risk_model.pt"
+SCALER_PATH = "models/credit_risk_scaler.joblib"
 
 
 FEATURE_COLUMNS = [
@@ -77,8 +78,8 @@ def create_predictions() -> pd.DataFrame:
 
     X = feature_data[FEATURE_COLUMNS]
 
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    scaler = joblib.load(SCALER_PATH)
+    X_scaled = scaler.transform(X)
 
     X_tensor = torch.tensor(X_scaled, dtype=torch.float32)
 

@@ -2,6 +2,7 @@ import duckdb
 import numpy as np
 import pandas as pd
 import torch
+import joblib
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -10,6 +11,7 @@ from torch import nn
 
 DATABASE_PATH = "warehouse/credit_risk.duckdb"
 MODEL_OUTPUT_PATH = "models/credit_risk_model.pt"
+SCALER_OUTPUT_PATH = "models/credit_risk_scaler.joblib"
 
 
 FEATURE_COLUMNS = [
@@ -95,6 +97,9 @@ def train_model() -> None:
 
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+
+    joblib.dump(scaler, SCALER_OUTPUT_PATH)
+    print(f"Saved scaler to: {SCALER_OUTPUT_PATH}")
 
     X_train_tensor = torch.tensor(X_train_scaled, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train.values.reshape(-1, 1), dtype=torch.float32)
