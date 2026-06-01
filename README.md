@@ -205,14 +205,21 @@ Create sample data
 → Write predictions
 ```
 
-## Current Model Output
+## Model Results
 
-The initial PyTorch model trains successfully from the DuckDB feature table and produces evaluation metrics including:
+The PyTorch training script saves model evaluation metrics to:
+
+```text
+reports/model_metrics.json
 
 * Accuracy
 * Precision
 * Recall
 * ROC AUC
+* Training row count
+* Test row count
+* Feature count
+* Positive class rate
 
 The current model is an MVP. The main goal is to demonstrate pipeline integration rather than maximize predictive performance.
 
