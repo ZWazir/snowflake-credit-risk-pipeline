@@ -8,7 +8,6 @@ The pipeline currently runs locally using DuckDB as a lightweight warehouse. It 
 
 The project demonstrates how raw credit application data can move through a structured data workflow:
 
-```text
 Synthetic Credit Data
 → Raw CSV
 → DuckDB Raw Table
@@ -16,7 +15,27 @@ Synthetic Credit Data
 → Feature Table
 → PyTorch Model Training
 → Prediction Output Table
-```
+
+## Portfolio Summary
+
+This project demonstrates an end-to-end data engineering workflow with an ML integration layer.
+
+It starts with synthetic credit application data, loads the data into a local warehouse, creates raw/staging/feature/prediction layers, trains a PyTorch binary classification model, writes predictions back to the warehouse, and validates the final outputs.
+
+The project is currently implemented locally with DuckDB, but the architecture is designed to be migrated to Snowflake. This allows the project to demonstrate warehouse-oriented pipeline design while Snowflake access is pending.
+
+Key skills demonstrated:
+
+- Python pipeline development
+- Warehouse-style data modeling
+- SQL transformation logic
+- Feature engineering
+- PyTorch model training
+- Reusable preprocessing with a saved scaler
+- Model metrics reporting
+- Prediction outputs written back to the warehouse
+- Automated validation checks
+- Reproducible end-to-end pipeline execution
 
 ## Project Purpose
 
@@ -58,9 +77,7 @@ Synthetic credit application data is generated with Python and saved as a CSV fi
 
 Output:
 
-```text
 data/raw/credit_applications.csv
-```
 
 ### 2. Raw Warehouse Layer
 
@@ -68,9 +85,7 @@ The raw CSV is loaded into DuckDB.
 
 Table:
 
-```text
 raw.credit_applications
-```
 
 ### 3. Staging Layer
 
@@ -78,9 +93,7 @@ The staging layer standardizes column types and creates basic derived business f
 
 Table:
 
-```text
 staging.stg_credit_applications
-```
 
 Example derived fields:
 
@@ -95,9 +108,7 @@ The feature layer creates model-ready columns for PyTorch training.
 
 Table:
 
-```text
 features.credit_risk_features
-```
 
 Example feature fields:
 
@@ -113,9 +124,7 @@ A PyTorch binary classification model is trained using the warehouse feature tab
 
 Model task:
 
-```text
 Predict whether a credit applicant defaults.
-```
 
 ### 6. Prediction Output
 
@@ -123,9 +132,7 @@ Model predictions are written back to DuckDB as a warehouse table.
 
 Table:
 
-```text
 predictions.credit_risk_predictions
-```
 
 Prediction fields:
 
@@ -140,7 +147,6 @@ The pipeline includes a validation script that checks whether the expected wareh
 
 Validation script:
 
-```text
 scripts/validate_pipeline_outputs.py
 
 ## Tech Stack
@@ -162,7 +168,6 @@ Planned future additions:
 
 ## Project Structure
 
-```text
 snowflake-credit-risk-pipeline/
 │
 ├── README.md
@@ -186,7 +191,6 @@ snowflake-credit-risk-pipeline/
 │
 └── models/
     └── train_pytorch_model.py
-```
 
 ## How to Run the Project
 
