@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import torch
 import joblib
+import json
+import os
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -12,6 +14,7 @@ from torch import nn
 DATABASE_PATH = "warehouse/credit_risk.duckdb"
 MODEL_OUTPUT_PATH = "models/credit_risk_model.pt"
 SCALER_OUTPUT_PATH = "models/credit_risk_scaler.joblib"
+METRICS_OUTPUT_PATH = "reports/model_metrics.json"
 
 
 FEATURE_COLUMNS = [
@@ -139,16 +142,33 @@ def train_model() -> None:
     recall = recall_score(y_test, test_predictions, zero_division=0)
     roc_auc = roc_auc_score(y_test, test_probabilities)
 
+    metrics = {
+        "accuracy": round(float(accuracy), 3),
+        "precision": round(float(precision), 3),
+        "recall": round(float(recall), 3),
+        "roc_auc": round(float(roc_auc), 3),
+        "training_rows": int(len(X_train)),
+        "test_rows": int(len(X_test)),
+        "feature_count": int(len(FEATURE_COLUMNS)),
+        "positive_rate": round(float(y.mean()), 3),
+    }
+
     print("\nModel Evaluation")
     print("----------------")
-    print(f"Accuracy:  {accuracy:.3f}")
-    print(f"Precision: {precision:.3f}")
-    print(f"Recall:    {recall:.3f}")
-    print(f"ROC AUC:   {roc_auc:.3f}")
+    print(f"Accuracy:  {metrics['accuracy']:.3f}")
+    print(f"Precision: {metrics['precision']:.3f}")
+    print(f"Recall:    {metrics['recall']:.3f}")
+    print(f"ROC AUC:   {metrics['roc_auc']:.3f}")
+
+    os.makedirs(os.path.dirname(METRICS_OUTPUT_PATH), exist_ok=True)
+
+    with open(METRICS_OUTPUT_PATH, "w") as metrics_file:
+        json.dump(metrics, metrics_file, indent=4)
 
     torch.save(model.state_dict(), MODEL_OUTPUT_PATH)
 
-    print(f"\nSaved model to: {MODEL_OUTPUT_PATH}")
+    print(f"\nSaved metrics to: {METRICS_OUTPUT_PATH}")
+    print(f"Saved model to: {MODEL_OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
