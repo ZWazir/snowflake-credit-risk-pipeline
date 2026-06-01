@@ -255,15 +255,17 @@ Completed:
 * Prediction table output
 * End-to-end pipeline runner
 
-Planned next steps:
+## Future Improvements
 
-* Improve model training workflow
-* Save and reuse preprocessing objects
-* Add validation tests
-* Add dbt transformation layer
-* Migrate warehouse layer from DuckDB to Snowflake
-* Add architecture diagram
-* Add final portfolio write-up
+Planned improvements include:
+
+- Migrate the local DuckDB warehouse layer to Snowflake
+- Add dbt models for staging, intermediate, feature, and prediction layers
+- Replace synthetic data with a larger public credit risk dataset
+- Add orchestration with Dagster or Airflow
+- Add automated tests for data quality and model outputs
+- Improve model performance and threshold tuning
+- Add a dashboard for monitoring prediction results
 
 ## Notes
 
