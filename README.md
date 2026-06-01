@@ -35,6 +35,21 @@ This project is designed to show:
 
 ## Current Architecture
 
+flowchart TD
+    A[Synthetic Credit Data] --> B[Raw CSV File]
+    B --> C[DuckDB: raw.credit_applications]
+    C --> D[DuckDB: staging.stg_credit_applications]
+    D --> E[DuckDB: features.credit_risk_features]
+    E --> F[PyTorch Model Training]
+    F --> G[Saved Model Artifact]
+    F --> H[Saved Scaler Artifact]
+    F --> I[Model Metrics JSON]
+    G --> J[Prediction Script]
+    H --> J
+    E --> J
+    J --> K[DuckDB: predictions.credit_risk_predictions]
+    K --> L[Pipeline Validation Checks]
+
 The local MVP uses the following layers:
 
 ### 1. Raw Data
