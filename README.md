@@ -207,10 +207,7 @@ Create sample data
 
 ## Model Results
 
-The PyTorch training script saves model evaluation metrics to:
-
-```text
-reports/model_metrics.json
+The PyTorch training script saves model evaluation metrics to: reports/model_metrics.json
 
 * Accuracy
 * Precision
