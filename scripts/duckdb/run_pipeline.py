@@ -3,13 +3,13 @@ import sys
 
 
 PIPELINE_STEPS = [
-    ("Create sample credit data", "scripts/create_sample_credit_data.py"),
-    ("Load raw data to DuckDB", "scripts/load_raw_to_duckdb.py"),
-    ("Create staging tables", "scripts/create_staging_tables.py"),
-    ("Create feature tables", "scripts/create_feature_tables.py"),
+    ("Create sample credit data", "scripts/duckdb/create_sample_credit_data.py"),
+    ("Load raw data to DuckDB", "scripts/duckdb/load_raw_to_duckdb.py"),
+    ("Create staging tables", "scripts/duckdb/create_staging_tables.py"),
+    ("Create feature tables", "scripts/duckdb/create_feature_tables.py"),
     ("Train PyTorch model", "models/train_pytorch_model.py"),
-    ("Write predictions to DuckDB", "scripts/write_predictions_to_duckdb.py"),
-    ("Validate pipeline outputs", "scripts/validate_pipeline_outputs.py"),
+    ("Write predictions to DuckDB", "scripts/duckdb/write_predictions_to_duckdb.py"),
+    ("Validate pipeline outputs", "scripts/duckdb/validate_pipeline_outputs.py"),
 ]
 
 

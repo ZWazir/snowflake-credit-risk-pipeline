@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import snowflake.connector
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_PATH = BASE_DIR / ".env"
 CSV_PATH = BASE_DIR / "data" / "raw" / "credit_applications.csv"
 
